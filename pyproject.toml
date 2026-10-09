@@ -1,0 +1,8 @@
+[project]
+name = "llm-developer-project-425"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "yandex-ai-studio-sdk>=0.22.1",
+    "ydb>=3.33.2",
+]

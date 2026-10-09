@@ -1,0 +1,15 @@
+# Environment variables
+.env
+.env.*
+
+# Allow configuration template
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# IDE
+.idea/
+.vscode/
