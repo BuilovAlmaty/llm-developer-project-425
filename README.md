@@ -1,35 +1,58 @@
 # AI-агент службы поддержки
 
-
 [![hexlet-check](https://github.com/BuilovAlmaty/llm-developer-project-425/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/BuilovAlmaty/llm-developer-project-425/actions)
 
-Соберите Help Desk-агента на Yandex AI Studio: почтовый агент (IMAP/SMTP) принимает
-обращения сотрудников, ищет ответ в корпоративной базе знаний (RAG) и при необходимости
-заводит тикет и сохраняет переписку в YDB Serverless. По пути освоите агента в AI Studio
-(Responses API), собственный MCP-инструмент, workflow по расписанию, RAG, защиту от
-prompt injection и PII-утечек, а также наблюдаемость (трейсы и токены). Решение
-разворачивается в вашем аккаунте Yandex Cloud (Cloud Functions, Workflows, MCP Hub,
-Lockbox). Сдача — репозиторий с конфигами и рабочий почтовый агент.
+Help Desk-агент на Yandex AI Studio: почтовый агент (IMAP/SMTP) принимает обращения сотрудников, ищет ответы в корпоративной базе знаний (RAG), а при необходимости создаёт тикеты и сохраняет переписку в YDB Serverless. Проект предусматривает MCP-инструмент, workflow по расписанию, защиту от prompt injection и утечек персональных данных, а также наблюдаемость.
 
 Учебный проект Хекслета: https://ru.hexlet.io/programs/llm-developer
-Как это должно работать: 
 
 ## Стек
 
-- Разное
+- **Yandex AI Studio / YandexGPT** — агент `help-desk` и Responses API.
+- **Yandex Cloud IAM** — сервисный аккаунт `ai-studio-sa` и управление доступом.
+- **Yandex Lockbox** — хранение параметров подключения и секретов.
+- **YDB Serverless** — хранение тикетов и переписки (следующие этапы).
+- **Cloud Functions, MCP Hub, Workflows** — почтовая интеграция, инструменты и фоновые задачи (следующие этапы).
 
 ## Установка
-
-<!-- Опишите установку: клонирование, зависимости, переменные окружения -->
 
 ```bash
 git clone https://github.com/BuilovAlmaty/llm-developer-project-425.git
 cd llm-developer-project-425
 ```
 
+### Настройка Yandex Cloud
+
+Создан сервисный аккаунт `ai-studio-sa` с ролями:
+
+- `functions.functionInvoker`
+- `serverless.mcpGateways.invoker`
+- `lockbox.payloadViewer`
+- `ai.languageModels.user`
+- `ydb.editor`
+
+В Yandex Lockbox созданы секреты:
+
+- `ydb-endpoint` — адрес подключения к YDB;
+- `ydb-database` — путь к базе данных.
+
+В Yandex AI Studio создан агент `help-desk` на базе YandexGPT. Идентификаторы агента, сервисного аккаунта и секретов указываются в локальном `.env`; значения секретов в репозитории не хранятся.
+
+Пример переменных окружения (без секретных значений):
+
+```dotenv
+FOLDER_ID=
+SA_ID=
+AGENT_ID=
+YDB_ENDPOINT_SECRET_ID=
+YDB_DATABASE_SECRET_ID=
+```
+
+Авторизация Cloud Functions будет выполняться через сервисный аккаунт и временные IAM-токены.
+
 ## Использование
 
-<!-- Добавьте примеры запуска и запись asciinema — именно это смотрит работодатель -->
+Пока агент `help-desk` доступен для тестирования в интерфейсе Yandex AI Studio. Почтовый канал, MCP-инструмент и RAG будут подключены на следующих этапах.
 
 ---
 
